@@ -210,7 +210,7 @@
       <div class="big-emoji" id="mood-emoji">🥰</div>
       <div id="afraid-message" class="tiny-note">תבחר חכם...</div>
 
-      <div>
+      <div style="display: flex; justify-content: center; gap: 12px; direction: ltr;">
         <button class="main-btn" onclick="startGame()">להתחיל משחק</button>
         <button class="secondary-btn" onclick="afraidYet()">מפחד?</button>
       </div>
@@ -266,9 +266,14 @@
         correct: "פעמונית"
       },
       {
-        question: "מה הכי חשוב לעשות כשאני אומרת 'לא משנה'? 😏",
-        answers: ["לא לשחרר ולבדוק מה איתי", "להתעלם", "להגיד סבבה", "לעבור נושא"],
-        correct: "לא לשחרר ולבדוק מה איתי"
+        question: "מה באמת המשמעות של 'לא משנה'? 😏",
+        answers: [
+          "להבין שמשנה מאוד",
+          "להתעלם",
+          "להגיד סבבה",
+          "לעבור נושא"
+        ],
+        correct: "להבין שמשנה מאוד"
       },
       {
         question: "איך הכי טוב לפייס אותי?",
