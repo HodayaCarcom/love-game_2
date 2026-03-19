@@ -267,12 +267,7 @@
       },
       {
         question: "מה באמת המשמעות של 'לא משנה'? 😏",
-        answers: [
-          "להבין שמשנה מאוד",
-          "להתעלם",
-          "להגיד סבבה",
-          "לעבור נושא"
-        ],
+        answers: ["להבין שמשנה מאוד", "להתעלם", "להגיד סבבה", "לעבור נושא"],
         correct: "להבין שמשנה מאוד"
       },
       {
@@ -301,6 +296,7 @@
     let score = 0;
     let locked = false;
     let shuffledQuestions = [];
+    let previousCorrectPositions = {};
 
     const startScreen = document.getElementById("start-screen");
     const quizScreen = document.getElementById("quiz-screen");
@@ -327,15 +323,37 @@
       return arr;
     }
 
+    function shuffleAnswersWithVariation(questionObj, questionIndex) {
+      let shuffledAnswers = [];
+      let newCorrectIndex = -1;
+      let tries = 0;
+
+      do {
+        shuffledAnswers = shuffleArray(questionObj.answers);
+        newCorrectIndex = shuffledAnswers.indexOf(questionObj.correct);
+        tries++;
+      } while (
+        shuffledAnswers.length > 1 &&
+        previousCorrectPositions[questionIndex] === newCorrectIndex &&
+        tries < 10
+      );
+
+      previousCorrectPositions[questionIndex] = newCorrectIndex;
+
+      return {
+        question: questionObj.question,
+        answers: shuffledAnswers,
+        correct: questionObj.correct
+      };
+    }
+
     function prepareQuestions() {
-      shuffledQuestions = questions.map(q => {
-        const shuffledAnswers = shuffleArray(q.answers);
-        return {
-          question: q.question,
-          answers: shuffledAnswers,
-          correct: q.correct
-        };
-      });
+      const indexedQuestions = questions.map((q, index) => ({ ...q, originalIndex: index }));
+      const shuffledQs = shuffleArray(indexedQuestions);
+
+      shuffledQuestions = shuffledQs.map(q =>
+        shuffleAnswersWithVariation(q, q.originalIndex)
+      );
     }
 
     function startGame() {
